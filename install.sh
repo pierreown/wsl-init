@@ -2,21 +2,14 @@
 
 set -e
 
-export E_RED="\033[31m"
-export E_GRE="\033[32m"
-export E_YEL="\033[33m"
-export E_BLU="\033[34m"
-export E_WHI="\033[37m"
-export E_PLA="\033[0m"
-
 fmt() {
     FMT_TYPE="$1"
     case "$FMT_TYPE" in
-    TIT) shift && printf "${E_BLU}--- %s ---${E_PLA}\n" "$*" && return ;;
-    SUC) shift && printf "${E_GRE}%s${E_PLA} " "$FMT_TYPE" ;;
-    ERR) shift && printf "${E_RED}%s${E_PLA} " "$FMT_TYPE" ;;
-    WRN | TIP) shift && printf "${E_YEL}%s${E_PLA} " "$FMT_TYPE" ;;
-    INF) shift && printf "${E_WHI}%s${E_PLA} " "$FMT_TYPE" ;;
+    TIT) shift && printf "\033[34m--- %s ---\033[0m\n" "$*" && return ;;
+    SUC) shift && printf "\033[32m%s\033[0m " "$FMT_TYPE" ;;
+    ERR) shift && printf "\033[31m%s\033[0m " "$FMT_TYPE" ;;
+    WRN | TIP) shift && printf "\033[33m%s\033[0m " "$FMT_TYPE" ;;
+    INF) shift && printf "\033[37m%s\033[0m " "$FMT_TYPE" ;;
     esac
     printf "%s\n" "$*"
 }
