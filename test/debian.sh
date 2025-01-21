@@ -23,7 +23,7 @@ EOF
 
 {
 
-    bash -c "$(wget -qO- https://raw.githubusercontent.com/pierreown/wsl-init/main/install.sh)"
+    sh -c "$(wget -qO- https://raw.githubusercontent.com/pierreown/wsl-init/main/install.sh)"
 
     # disable services
 
