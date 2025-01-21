@@ -35,6 +35,8 @@ wait_for_init() {
 if [ $# -eq 0 ]; then
     set -- "${SHELL:-/bin/sh}"
 fi
+# shellcheck disable=SC2016
+set -- sh -c 'cd "$_PWD_"; unset _PWD_ OLDPWD SHLVL; exec "$@"' -- "$@"
 
 # Wait for the init process
 INIT_PID="$(wait_for_init)"
@@ -44,11 +46,12 @@ if [ -z "$SUDO_USER" ]; then
     case "$INIT_PID" in
     '')
         echo "Cannot find init process, cannot enter wsl-init environment" >&2
-        exec env WSL_INIT_NSENTER_FLAG=2 "$@"
+        exec \
+            env WSL_INIT_NSENTER_FLAG=2 _PWD_="${PWD:-/}" "$@"
         ;;
     *)
-        exec nsenter -aF --wd="${PWD:-/}" -t "$INIT_PID" -- setsid -cw \
-            env WSL_INIT_NSENTER_FLAG=1 "$@"
+        exec nsenter -aF -t "$INIT_PID" -- setsid -cw \
+            env WSL_INIT_NSENTER_FLAG=1 _PWD_="${PWD:-/}" "$@"
         ;;
     esac
 fi
@@ -61,11 +64,11 @@ case "$INIT_PID" in
 '')
     echo "Cannot find init process, cannot enter wsl-init environment" >&2
     exec setpriv --reuid "${SUDO_UID:?}" --regid "${SUDO_GID:?}" --init-groups --reset-env -- \
-        env WSL_INIT_NSENTER_FLAG=2 "$@"
+        env WSL_INIT_NSENTER_FLAG=2 _PWD_="${PWD:-/}" "$@"
     ;;
 *)
-    exec nsenter -aF --wd="${PWD:-/}" -t "$INIT_PID" -- setsid -cw \
+    exec nsenter -aF -t "$INIT_PID" -- setsid -cw \
         setpriv --reuid "${SUDO_UID:?}" --regid "${SUDO_GID:?}" --init-groups --reset-env -- \
-        env WSL_INIT_NSENTER_FLAG=1 "$@"
+        env WSL_INIT_NSENTER_FLAG=1 _PWD_="${PWD:-/}" "$@"
     ;;
 esac
