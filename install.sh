@@ -84,7 +84,7 @@ check_missing_commands() {
 install_dependencies() {
     fmt TIT "Install Dependencies"
 
-    set -- "wget" "unshare" "curl"
+    set -- "wget" "unshare"
     if [ "$FLAG_FORCE" -eq 1 ]; then
         fmt INF "Force install dependencies..."
     elif ! check_missing_commands "$@"; then
@@ -94,7 +94,7 @@ install_dependencies() {
         return 0
     fi
 
-    set -- "wget" "util-linux" "curl"
+    set -- "wget" "util-linux"
     if pkg_install "$@"; then
         fmt SUC "Installed:" "$@"
     else
