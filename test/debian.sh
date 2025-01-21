@@ -1,7 +1,7 @@
 #!/bin/bash
 
 apt update
-apt install -y bash bash-completion wget
+apt install -y bash bash-completion wget sudo
 
 {
     tee /etc/sudoers.d/wsl-init <<EOF
