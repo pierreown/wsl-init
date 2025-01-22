@@ -82,3 +82,11 @@ wsl-init-enter [command [args...]]      # 进入 wsl-init 命名空间执行命�
     ```bash
     usermod -a -G wsl-init [用户名]
     ```
+
+## 已测试系统
+
+-   Ubuntu 20.04+
+-   Debian 11+
+-   Alpine 3.16+
+-   Rocky 8+
+-   OpenSUSE 15.4+
